@@ -1,298 +1,237 @@
-Phase 1: System Planning and Distribution Selection (Week 1) 
 
- 
+# Phase 1: System Planning and Distribution Selection (Week 1)
 
-OVERVIEW 
+## OVERVIEW
 
-This phase covers the planning and setup of my VirtualBox lab environment using a laptop as the host machine. The environment consists of one Ubuntu Server and one Ubuntu Desktop Workstation configured with appropriate network modes for secure internal communication and internet access. 
+### Systems:
+1. **Ubuntu server 22.04**
+   - Network mode: NAT AND host only 
+   - IP Address: 192.168.56.103/24
+2. **Ubuntu Desktop**
+   - Network mode: NAT AND host only
+   - IP Address: 192.168.56.102/24
 
- 
+### Host environment
+1. Physical Host Machine (Laptop)
+2. Virtualization Platform: Oracle VirtualBox
 
-Systems 
+## System Architecture Diagram
 
-Ubuntu Server 22.04 LTS 
+System Architecture Diagram showing both systems and network connections
 
-Network Mode: Host-Only 
-IP Address: 192.168.56.103/24 
-Ubuntu Desktop 24.04 LTS 
+![System Architecture Diagram](image/week1/System%20Architecture%20Diagram.png)
 
-Network Mode: NAT + Host-Only 
-IP Address (Host-Only): 192.168.56.102/24 
- 
+---
 
-Host Environment 
+## Distribution Selection Justification
 
-Physical Host Machine: Mac Laptop 
-Virtualization Platform: Oracle VirtualBox 
- 
+Comparing your chosen server distribution with alternatives
 
-System Architecture Diagram 
+### Ubuntu Server
 
-System Architecture Diagram showing both systems and network connections. 
+**Pros:**
+- Easy to use as a beginner-friendly supercomputer requiring just a few minutes to start, suitable as a course work tool.
+- Tremendous storage of the most current packages on demand to install.
+- An enjoyable community and dozens of it all answered documentation.
+- Very well compatible with VirtualBox and other cloud services.
+- Frequent security releases and a 5-year LTS release cycle.
 
-The lab environment consists of: 
+**Cons:**
+- A little bit more unstable than Debian where you want a long-term zero-change environment.
+- Consumes multiple system resources more than ultra-lightdistros, which could chew of older laptops.
+- There are certain Ubuntu Pro subscriptions required with some features of the enterprises.
 
-One Ubuntu Server VM connected only to the Host-Only network 
-One Ubuntu Workstation VM connected to both NAT and Host-Only 
-A private Host-Only network for internal communication 
-A NAT network on the workstation for internet access 
-This setup allows: 
+### Debian
 
-Secure private communication between the server and workstation 
-Internet access only from the workstation 
-The server to remain isolated from the internet for security 
- 
+**Pros:**
+- Very stable and reliable- backbone to millions of servers.
+- Works best with long-term manufacturing when you have to make a few stops.
+- Golden security due to intense checking of packages.
+- Extremely light, very low-installation, fits well used on low-spec machines.
 
- 
+**Cons:**
+- Packages are out of date and maintain a slow update pace.
+- Not a beginner-friendly interface; you will have to do manual set up.
+- Newbies can find community docs to be very technical.
+- Uncommonly found in the cloud platforms than Ubuntu.
 
-Distribution Selection Justification 
+### The Red Hat Enterprise Linux (RHEL)
 
-Comparing the chosen server distribution with alternatives: 
+**Pros:**
+- Very stable, well-tested and proven to work in the enterprise.
+- Superior security and high life cycle.
+- Red Hat is officially supported through subscription.
+- Good performance of corporate servers and virtualization.
 
- 
+**Cons:**
+- To have full features and updates, there is need to have a paid subscription.
+- More difficult with amateurs or students.
+- Restricted free repository- in most cases you will have to use EPEL or repos.
+- Software upgrades happen at a slow pace.
 
-Ubuntu Server 
+### Conclusion
 
-Pros: 
+Ubuntu Server will be the most appropriate solution to use in this deployment as it provides the best combination of ease of use, the availability of modern software, excellent support of the community and compatibility with VirtualBox. Debian is not as user-friendly and with older packages which do well in stability. RHEL is good in enterprise processes but expensive to learn as it has to be subscribed to. Hence, Ubuntu Server is the most convenient and effective solution in case of learning or laboratory based server environment.
 
-Easy to use and beginner-friendly, suitable for coursework and lab environments 
-Huge repository of up-to-date software packages 
-Large, active community with extensive documentation 
-Excellent compatibility with VirtualBox and cloud platforms 
-Frequent security updates and a 5-year LTS support cycle 
-Cons: 
+---
 
-Slightly less stable than Debian for ultra-long-term production use 
-Uses more system resources than ultra-light distributions 
-Some enterprise features require Ubuntu Pro subscription 
- 
+## Workstation Configuration Decision
 
-Debian 
+Justifying your choice of workstation option
 
-Pros: 
+### Workstation Configuration
+- **Workstation OS:** Ubuntu Workstation
+- **VirtualBox Network Adapters:**
+  - Adapter 1: NAT
+  - Adapter 2: Host-Only (Static IP: 192.168.56.102/24)
 
-Extremely stable and reliable 
-Excellent long-term performance 
-Strong security due to strict package testing 
-Very lightweight, suitable for low-spec systems 
-Cons: 
+### Workstation Role
 
-Packages are often outdated 
-Manual configuration is required 
-Documentation can be very technical for beginners 
-Less common in cloud environments compared to Ubuntu 
- 
+I installed the Ubuntu Workstation as a client computer with the sole purpose to:
+- Access the Ubuntu Server
+- Test client/server communication
+- Run administrative tasks
+- Update or pull packages over the internet
+- Be a service control terminal of the server services
 
-Red Hat Enterprise Linux (RHEL) 
+Since there will be an internal lab traffic together with access to the internet, I will require a dual-adapter setup.
 
-Pros: 
+### Rationale of Workstation Set up
 
-Enterprise-grade stability and performance 
-Very strong security features 
-Professionally supported 
-Suitable for corporate data centres 
-Cons: 
+#### NAT Adapter – Internet Access
 
-Requires paid subscription for full features 
-Difficult for beginners and students 
-Limited free repositories 
-Slower software updates 
- 
+**Why use NAT:**
+The NAT allows the workstation to access the foreign sites of the network provided by the host. It makes it possible to:
+- Upgrade and download packages
+- Integrate utilities (such as curl, openssh client, browsers)
+- Check documentation, tutorials and repositories
 
-Conclusion 
+**Pros:**
+- Does not require installation of a complex network - it is plug and play
+- The VM remains out of the limelight
+- Secures the system and at the same time permits outbound traffic
 
-Ubuntu Server was selected as the most appropriate solution for this deployment because it offers the best balance between ease of use, modern software availability, long-term support, strong community backing, and full compatibility with VirtualBox. Debian is more stable but less beginner-friendly with older packages. RHEL is enterprise-focused but requires a paid subscription. Therefore, Ubuntu Server is the most effective choice for a learning and laboratory-based environment. 
+#### Host-Only Adapter - Internal Network and Server Access
 
-Workstation Configuration Decision 
-Workstation Configuration 
-Workstation OS: Ubuntu Desktop 24.04 LTS 
-VirtualBox Network Adapters: 
-Adapter 1: NAT 
-Adapter 2: Host-Only (Static IP: 192.168.56.102/24) 
-Workstation Role 
-The Ubuntu Workstation was installed as a client and control system to: 
+**Why Host-Only:**
+I would require a straight connection to Ubuntu Server at 192.168.56.103. I have a private LAN with Host Only and it consists of:
+- The host machine
+- The Ubuntu Server
+- The Ubuntu Workstation
 
-Access the Ubuntu Server 
-Test client/server communication 
-Perform administrative tasks 
-Download and update packages from the internet 
-Act as the control terminal for all server services 
-Since it requires both internet access and internal server communication, a dual-adapter setup was necessary. 
+**Pros:**
+- Static, fixed IPs (e.g. 192.168.56.102 of the workstation)
+- SSH panic and testing and user tests are predictable
+- Secure and private - does not present itself to the external network
 
-Rationale of Workstation Setup 
-NAT Adapter – Internet Access 
+### Reasons why Ubuntu Workstation was selected (justification of choice of OS)
 
-NAT allows the workstation to access the internet through the host machine. This is required to: 
+Professor wanted me to know why we were utilizing Ubuntu and here is a brief overview of why we were using Ubuntu as a student. At last we agreed on Ubuntu since it fulfills all our requirements in class and in the laboratory.
 
-Update and download system packages 
-Install tools such as OpenSSH client, curl, and browsers 
-Access online documentation and learning resources 
-Pros: 
+**Pros of Ubuntu Workstation:**
+- Easy to use interface that does not misguide you
+- Huge software shop and the vibrant community to reach out
+- Ideal when it comes to practical training, fast tests, and spin-ups
+- LTS releases are robust and long time stable
+- VirtualBox is a breeze because it gets along well with it
 
-Plug-and-play configuration 
-No exposure of the VM to the public network 
-Secure outbound-only internet access 
- 
+**Why not alternatives of workstations?**
+- **Windows VM:** occupies high RAM usage, is slow and the license fees will accumulate
+- **CentOS/RHEL Workstation:** unnecessary complication and weight, unfriendly to beginners
+- **Debian Desktop:** is tested, more dated in packages and a wee bit more difficult to navigate
 
-Host-Only Adapter – Internal Network and Server Access 
+At that, Ubuntu Workstation is right in the middle of convenience, functionality and general compatibility with our projects.
 
-The Host-Only adapter provides a private LAN between: 
+---
 
-Host machine 
-Ubuntu Server 
-Ubuntu Workstation 
-This enables: 
+## Network Configuration Documentation
 
-Direct SSH access to the server 
-Secure internal testing 
-No exposure to the public internet 
-Pros: 
+Covering VirtualBox settings and IP addressing
 
-Static IP addressing 
-Predictable SSH connections 
-Secure isolated network 
-Reasons Why Ubuntu Workstation Was Selected 
-Ubuntu Workstation was selected because it fulfils all classroom and laboratory requirements. 
+This documentation describes the network setup for a VirtualBox-based environment containing:
 
-Pros: 
+### Ubuntu Server
 
-Easy-to-use graphical interface 
-Large software repository and community 
-Ideal for testing, learning, and rapid deployment 
-Long-term support releases 
-Excellent compatibility with VirtualBox 
-Why Not Alternatives: 
+**VirtualBox Settings:**
+- Adapter 1 → Host-Only Adapter (vboxnet0)
+- Adapter 2 → NAT
+- IP Address: 192.168.56.103/24
+- Subnet Mask: 255.255.255.0
+- Gateway: None (Host-Only network)
+- DNS: From host (optional)
 
-Windows VM: High RAM usage, slow performance, licensing costs 
-CentOS/RHEL Desktop: Complex and unsuitable for beginners 
-Debian Desktop: Older packages and harder configuration 
-Ubuntu Workstation provides the best balance of usability, performance, and compatibility for student use. 
+![Server Host-Only Configuration](image/week1/serverho1.png)
 
-Network Configuration Documentation 
-This documentation describes the network setup for the VirtualBox-based environment. 
+![Server NAT Configuration](image/week1/servernat.png)
 
-Ubuntu Server Network Configuration 
-VirtualBox Settings: 
+### Ubuntu Workstation
 
-Adapter 1 → Host-Only Adapter (vboxnet0) 
-IP Configuration: 
+**VirtualBox Settings:**
+- Adapter 1 → NAT
+- Adapter 2 → Host-Only Adapter
+- Host-Only IP Address: 192.168.56.102
+- Subnet Mask: 255.255.255.0
+- Gateway: 192.168.56.1 (host)
+- DNS: Uses NAT DHCP DNS
 
-IP Address: 192.168.56.103/24 
-Subnet Mask: 255.255.255.0 
-Gateway: None 
-Internet Access: None (Isolated by design) 
- 
+![Workstation NAT Configuration](image/week1/workstationnat.png)
 
- 
+![Workstation Host-Only Configuration](image/week1/workstationhost.png)
 
-Ubuntu Workstation Network Configuration 
+### Host (Laptop)
 
-VirtualBox Settings: 
+The system uses two VirtualBox network modes:
+- **Host-Only Network** → internal communication
+- **NAT Network** → internet access
 
-Adapter 1 → NAT 
-Adapter 2 → Host-Only Adapter 
-Host-Only Configuration: 
+---
 
-IP Address: 192.168.56.102/24 
-Subnet Mask: 255.255.255.0 
-Gateway: 192.168.56.1 
-NAT Configuration: 
+## System Specifications Documentation
 
-Provides automatic DHCP and DNS for internet access 
- 
+Using CLI commands: `uname`, `free`, `df -h`, `ip addr`, and `lsb_release`
 
- 
+### System Information (uname)
 
- 
+![System Information](image/week1/uname.png)
 
- 
+- **Kernel Version:** 6.14.0-27-generic
+- **Architecture:** x86_64 (64-bit)
+- **Operating System:** GNU/Linux
+- **Build:** Ubuntu SMP, PREEMPT_DYNAMIC
 
-Host (Laptop) 
+### Memory Information (free -h)
 
-The system uses two VirtualBox network modes: 
+![Memory Information](image/week1/free-h.png)
 
-Host-Only Network → Internal communication 
-NAT Network → Internet access 
- 
+- **Total RAM:** 3.8 GiB
+- **Used RAM:** 1.0 GiB
+- **Available RAM:** 2.8 GiB
+- **Swap:** 0 B (no swap configured)
 
-System Specifications Documentation 
+### Disk Space (df -h)
 
-The following commands were used: 
-uname, free -h, df -h, ip addr, lsb_release 
+![Disk Space](image/week1/sf-h.png)
 
- 
+- **Primary Disk Size:** 25 GB
+- **Used:** 5.1 GB
+- **Available:** 19 GB
+- **Root Filesystem:** /dev/sda2
 
-System Information (uname) 
+### Network Interfaces (ip addr)
 
-Kernel Version: 6.14.0-27-generic 
-Architecture: x86_64 (64-bit) 
-Operating System: GNU/Linux 
-Build: Ubuntu SMP, PREEMPT_DYNAMIC 
- 
+![IP Address Configuration](image/week1/ipaddr.png)
 
-Memory Information (free -h) 
+| Interface | Network Type | IP Address | Purpose |
+|-----------|--------------|------------|---------|
+| lo | Loopback | 127.0.0.1 | Local processes |
+| enp0s3 | NAT | 10.0.2.15/24 | Internet access |
+| enp0s8 | Host-Only | 192.168.56.102/24 | Communication with server |
 
-Total RAM: 3.8 GiB 
-Used RAM: 1.0 GiB 
-Available RAM: 2.8 GiB 
-Swap: 0 B 
- 
+### Distribution Information (lsb_release)
 
- 
+![LSB Release Information](image/week1/lsb.png)
 
-Disk Space (df -h) 
-
-Primary Disk Size: 25 GB 
-Used: 5.1 GB 
-Available: 19 GB 
-Root Filesystem: /dev/sda2 
- 
-
-Network Interfaces (ip addr) 
-
-Interface 
-Network Type 
-IP Address 
-Purpose 
-lo 
-Loopback 
-127.0.0.1 
-Local processes 
-enp0s3 
-NAT 
-10.0.2.15/24 
-Internet access 
-enp0s8 
-Host-Only 
-192.168.56.102/24 
-Server communication 
- 
-
- 
-
- 
-
-Distribution Information (lsb_release) 
-
-Distribution: Ubuntu 
-Version: 24.04.3 LTS 
-Codename: Noble 
-Support: Long-Term Support (LTS) 
- 
-
- 
-
- 
-
-Final Summary 
-
-In Phase 1, I successfully planned and deployed a secure VirtualBox lab environment consisting of: 
-
-One isolated Ubuntu Server using Host-Only networking 
-One Ubuntu Workstation using NAT + Host-Only networking 
-This design ensures: 
-
-Strong security through server isolation 
-Reliable internal communication 
-Safe and controlled internet access through the workstation only 
- 
+- **Distro:** Ubuntu
+- **Version:** 24.04.3 LTS
+- **Codename:** noble
+- **Support:** Long-term support (LTS)
